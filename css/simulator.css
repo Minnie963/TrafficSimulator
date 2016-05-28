@@ -39,7 +39,7 @@ textarea{
     height: 200px;
     overflow: auto;
     font-size: 13px;
-    background-color: rgb(240, 240, 240);
+    background-color: rgba(240, 240, 240, 0.7);
 }
 .sidebar-button{
     height: 30px;
