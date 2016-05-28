@@ -3,10 +3,36 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Simulator</title>
-        <link rel="stylesheet" href="css/global.css"/>
+        <title>Traffic Simulator</title>
+        <link rel="stylesheet" href="css/simulator.css"/>
     </head>
     <body>
-        
+        <div id="sidebar">
+
+            <h4>Control Panel</h4>
+            <p id="console">
+                ### This is the console. ### <br /> <br /> Specify first the filename of the
+                map you want to load from the "maps" folder.
+            </p>
+
+            <input type="button" id="print-data" value="Input Data" class="sidebar-button"/>
+            <input type="button" id="print-data" value="Blur Path" class="sidebar-button"/>
+
+            <p>Simulation:</p>
+            <input type="button" id="cp-left" value="Start" class="sidebar-button"/>
+            <input type="button" id="cp-right" value="Stop" class="sidebar-button"/>
+
+            <p>Map Image:</p>
+            <input type="text" id="map-filename-input" class="animate2s" placeholder="File Name"/>
+            <input type="button" id="load-map" value="Load Map" class="sidebar-button"/>
+            <input type="button" id="show-hide-map" value="Show/Hide" class="sidebar-button"/>
+
+            <p>Snap Control Panel:</p>
+            <input type="button" id="cp-left" value="Left" class="sidebar-button"/>
+            <input type="button" id="cp-right" value="Right" class="sidebar-button"/>
+        </div>
+        <div id="map-area">
+           <div id="canvas-area"></div>
+        </div>
     </body>
 </html>
