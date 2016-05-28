@@ -1,4 +1,6 @@
 
+/*------------------- OBJECT DEFINITIONS & GLOBAL VARIABLES -------------------------*/
+
 function point(x, y, pointType){
     this.x = x;
     this.y = y;

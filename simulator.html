@@ -5,6 +5,8 @@
         <meta charset="utf-8" />
         <title>Traffic Simulator</title>
         <link rel="stylesheet" href="css/simulator.css"/>
+        <script src="js/jquery-min.js"></script>
+        <script src="js/simulator.js"></script>
     </head>
     <body>
         <div id="sidebar">
@@ -19,8 +21,8 @@
             <input type="button" id="print-data" value="Blur Path" class="sidebar-button"/>
 
             <p>Simulation:</p>
-            <input type="button" id="cp-left" value="Start" class="sidebar-button"/>
-            <input type="button" id="cp-right" value="Stop" class="sidebar-button"/>
+            <input type="button" id="sim-start" value="Start" class="sidebar-button"/>
+            <input type="button" id="sim-stop" value="Stop" class="sidebar-button"/>
 
             <p>Map Image:</p>
             <input type="text" id="map-filename-input" class="animate2s" placeholder="File Name"/>
@@ -32,7 +34,7 @@
             <input type="button" id="cp-right" value="Right" class="sidebar-button"/>
         </div>
         <div id="map-area">
-           <div id="canvas-area"></div>
+           <div id="canvas"></div>
         </div>
     </body>
 </html>
