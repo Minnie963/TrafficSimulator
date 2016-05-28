@@ -1,98 +1,260 @@
 
+function point(x, y, pointType){
+    this.x = x;
+    this.y = y;
+    this.branch = [];
+    this.type = pointType;
+}
 
-//event listeners
+var path = [];
+
+var rootPointIndex = -1;
+var branchPoints = [];
+
+var pointType = 0;
+var currentMapImage = '';
+var mapVisibility = 1;
+
+var systemMode = 0; // 0 - Make Path, 1 - Link Mode
+
+
+/*-------------------------------------------------------------------- */
+
+/*----------------- EVENT LISTENERS ------------------------------------- */
+
 $(document).ready(function () {
-    $('#map-area').click(function (e) {
-        var x = Math.round(e.pageX - $(this).offset().left);
-        var y = Math.round(e.pageY - $(this).offset().top);
-        positionMarker(x, y);
-        putMarker(x, y);
-        var pt = new point(x, y);
-        addPointsToPath(pt);
+    $('#map-click').click(function (e) {
+        if (systemMode == 0) {
+            var x = Math.round(e.pageX - $(this).offset().left);
+            var y = Math.round(e.pageY - $(this).offset().top);
+            var pt = new point(x, y, pointType);
+            addPointToPath(pt);
+            positionMarker(x, y);
+            putMarker(x, y, pointType);
+        }
     });
-
-    $('#trace-path').click(function () {
-        tracePath();
-    })
 
     $('#undo').click(function () {
         undoAddPoint();
     });
 
-    $('#hide-path').click(function () {
-        hidePath();
+    $('#link-mode').click(function () {
+        if (systemMode == 1) {
+            exitLinkMode();
+            systemMode = 0;
+            clearRootPointIndex();
+        }
+        else {
+            linkMode();
+            systemMode = 1;
+            clearRootPointIndex();
+        }
+    });
+
+    $(document).on('click', '.pin-pointer', function (e) {
+        if (systemMode == 1) {
+            if (rootPointIndex == -1) {
+                initRootPoint(e.target.id);
+            }
+            else {
+                addBranchPoint(e.target.id);
+            }
+        }
+    });
+
+    $('#link-done-button').click(function () {
+        saveBranchPoints();
+        hideLinkDoneButton();
+    });
+
+    $('#print-data').click(function () {
+        printData();
+        openDataBox();
+    });
+
+    $('.pt-sel-button').click(function (e) {
+        if ($('#' + e.target.id).data('pt') == 'go') {
+            changePointType(0);
+        }
+        else {
+            changePointType(1);
+        }
+    });
+
+    $('#load-map').click(function () {
+        loadMap($('#map-filename-input').val());
+    });
+
+    $('#show-hide-map').click(function () {
+        if (mapVisibility == 0) {
+            showMap();
+            mapVisibility = 1;
+        }
+        else {
+            hideMap();
+            mapVisibility = 0;
+        }
+    });
+
+    $('#cp-left').click(function () {
+        $('#sidebar').css({ 'left': '0px', 'right': 'auto' });
+    });
+    $('#cp-right').click(function () {
+        $('#sidebar').css({ 'left': 'auto', 'right': '0px' });
+    });
+
+    $('#close-databox-button').click(function () {
+        hideDataBox();
     });
 });
 
-//positions the red marker on the coordinate clicked on the map
+/*--------------------------------------------------------------------- */
+
+/* ----------------- METHOD DEFINITIONS ------------------------------ */
+
 function positionMarker(x, y){
-    $("#map-pointer").css({top: y, left: x});
+    $("#map-pointer").css({top: y - 6, left: x - 6});
 }
 
-//point or coordinate object
-function point(x, y){
-    this.x = x;
-    this.y = y;
-}
-
-function traffic(){
-    var multiPath = [];
-}
-
-var path = [];
-
-//adds points to a path for every point clicked on the map
-function addPointsToPath(point){
-    path.push(point);
-    $('#coordinates-container').html('');
-    
-    for(var i = 0; i < path.length; i++){
-        $('#coordinates-container').html($('#coordinates-container').html() + 'x: ' + path[i].x + ' y: ' + path[i].y + '<br/>');
-    }
-}
-
-//leaves a red marker on the coordinate clicked on the map
-function putMarker(x, y){
+function putMarker(x, y, pointType){
     var newID = 'point_' + x + '_' + y;
     $('#map-pointer').clone().attr('id', newID).appendTo('#map-area');
-    $('#' + newID).attr('class', 'pin-pointer');
-    $('#' + newID).css({ top: y - 5, left: x - 5});
+    if(pointType == 0){
+        //put a green "go" point
+        $('#' + newID).attr('class', 'pin-pointer go-pt');
+    }
+    else{
+        //put a gray "dead" point
+        $('#' + newID).attr('class', 'pin-pointer dead-pt');
+    }
+
+    $('#' + newID).attr('data-index', path.length - 1);
+    $('#' + newID).attr('title', newID);
+    $('#' + newID).css({ top: y - 6, left: x - 6});
+    $('#map-pointer').css({ top: 0, left: 0});
 }
 
-var timer;
-var index = 1;
-var speedFactor = 700;
-function tracePath(){
-    $('#path-tracer').remove();
-    var newID = 'path-tracer';
-    $('#map-pointer').clone().attr('id', newID).appendTo('#map-area');
-    $('#' + newID).attr('class', 'path-tracer');
-    $('#path-tracer').css({ top: path[0].y - 5, left: path[0].x - 5 });
-    timer = setInterval(trace, speedFactor);
+function addPointToPath(point){
+    path.push(point);
+    $('#console').html('');
+    displayCoordinates();
 }
 
-function trace() {
-    $('#path-tracer').css({ top: path[index].y - 5, left: path[index].x - 5 });
-    index++;
-    if(index >= path.length){
-        clearInterval(timer);
-        index = 1;
+function displayCoordinates(){
+    for(var i = 0; i < path.length; i++){
+        $('#console').html($('#console').html() + 'x: ' + path[i].x + ' y: ' + path[i].y + '<br/>');
     }
 }
 
 function undoAddPoint(){
-    var undoID = 'point_' + path[path.length - 1].x + '_' + path[path.length - 1].y;
-    alert(undoID);
-    //$('#' + undoID).remove();
+    $('#console').html('');
+    var elementToRemove = '#point_' + path[path.length - 1].x + '_' + path[path.length - 1].y;
+    $(elementToRemove).remove();
+    path.splice(path.length - 1, 1);
+    displayCoordinates();
 }
 
-function hidePath(){
-    $('.pin-pointer').css('opacity', 0.2);
+function linkMode(){
+    //disable all other function buttons
+    $('#undo').attr('disabled', '');
+    $('#trace-path').attr('disabled', '');
+    blurAllPoints();
+    printToConsole('### Link Mode On ### <br/><br/> Select a point as root then select point/points where it can branch.');
 }
 
+function exitLinkMode(){
+    $('#undo').removeAttr('disabled');
+    $('#trace-path').removeAttr('disabled');
+    unblurAllPoints();
+    printToConsole('### Link Mode Off ###');
+}
 
+function unblurPoint(id){
+    $('#' + id).css('opacity', '1.0');
+}
 
+function blurAllPoints(){
+    $('.pin-pointer').css('opacity', '0.4');
+}
 
+function unblurAllPoints(){
+    $('.pin-pointer').css('opacity', '1.0');
+}
 
+function printToConsole(message){
+    $('#console').html(message);
+}
 
+function printData(){
+    printToConsole('### Showing Path Data ### <br/><br/> Copy the data from the TextBox and save it to a text file.');
+    $('#get-data-tbox').html(JSON.stringify(path));
+}
 
+function clearRootPointIndex(){
+    rootPointIndex = -1;
+}
+
+function showLinkDoneButton(){
+    $('#link-done-button').attr('class', '');
+}
+
+function hideLinkDoneButton(){
+    $('#link-done-button').attr('class', 'hidden');
+}
+
+function initRootPoint(pointID){
+    unblurPoint(pointID);
+    rootPointIndex = $('#' + pointID).data('index');
+    printToConsole('Root ID: <br/>' + pointID + '<br/> Root Index: ' + rootPointIndex);
+}
+
+function addBranchPoint(pointID){
+    showLinkDoneButton();
+    $('#' + pointID).attr('class', $('#' + pointID).attr('class') + ' branch-pt');
+    var rootID = 'point_' + path[rootPointIndex].x + '_' + path[rootPointIndex].y;
+    $('#' + rootID).attr('class', $('#' + rootID).attr('class') + ' root-pt');
+    branchPoints.push($('#' + pointID).data('index'));
+}
+
+function saveBranchPoints(){
+    path[rootPointIndex].branch = branchPoints;
+    printToConsole('### Branch Points Added to point_' + path[rootPointIndex].x + '_' + path[rootPointIndex].y);
+    branchPoints = [];
+    clearRootPointIndex();
+    blurAllPoints();
+}
+
+function changePointType(type){
+    $('.pt-sel-button').attr('class', 'pt-sel-button');
+    if(type == 0){
+        $('#go-pt-sel-button').attr('class', 'pt-sel-button selected');
+        pointType = 0;
+    }
+    else{
+        $('#dead-pt-sel-button').attr('class', 'pt-sel-button selected');
+        pointType = 1;
+    }
+}
+
+function loadMap(filename){
+    currentMapImage = 'resources/maps/' + filename;
+    $('#map-click').css('background-image', 'url(' + currentMapImage + ')');
+    mapVisibility = 1;
+}
+
+function showMap(){
+    $('#map-click').css('background-image', 'url(' + currentMapImage + ')');
+}
+
+function hideMap(){
+    $('#map-click').css('background-image', "url('')");
+}
+
+function openDataBox(){
+    $('#get-data-box').attr('class', '');
+}
+
+function hideDataBox(){
+    $('#get-data-box').attr('class', 'hidden');
+}
+/*---------------------------------------------------------------------*/
