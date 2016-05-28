@@ -41,6 +41,9 @@ $(document).ready(function () {
             mapVisibility = 0;
         }
     });
+    $('#sim-start').click(function(){
+        window.requestAnimationFrame(animate);
+    });
 
 });
 
