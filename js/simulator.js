@@ -12,6 +12,8 @@ var path = [];
 
 var mapVisibility = 1;
 
+var toAnimate = false;
+
 /*------------------------------------------------------------------------- */
 
 /*------------------- EVENT LISTENERS  --------------------------------------*/
@@ -42,8 +44,12 @@ $(document).ready(function () {
         }
     });
     $('#sim-start').click(function(){
-        window.requestAnimationFrame(animate);
+        toAnimate = true;
     });
+
+    $('#sim-stop').click(function(){
+        toAnimate = false;
+    })
 
 });
 
