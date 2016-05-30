@@ -1,7 +1,8 @@
 var testPoints = [];
 var cars;
 var timer = 0;
-var auto = new tAutomata();
+var auto3 = new tAutomata();
+var auto4 = new fAutomata();
 var finalEntryPoints = [];
 
 function animate(){
@@ -13,7 +14,10 @@ function animate(){
 		cars.moveCars();
 	}
 	if(timer == 500){
-		testTLight[0]['points'] = auto.doTraffic(testTLight[0]['points']);
+		if(testTLight[0]['type'] == 0)
+			testTLight[0]['points'] = auto3.doTraffic(testTLight[0]['points']);
+		else if(testTLight[0]['type'] == 1)
+			testTLight[0]['points'] = auto4.doTraffic(testTLight[0]['points']);
 		timer = 0;
 	}
 	timer++;
