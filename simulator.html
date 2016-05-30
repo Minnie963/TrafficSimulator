@@ -11,6 +11,14 @@
         <script src="js/simulator.js"></script>
     </head>
     <body>
+        <div id="get-data-box" class="hidden">
+            <div class="gdl">PATH DATA: </div>
+            <textarea id="pathdata-tbox" class="animate2s"></textarea>
+            <div class="gdl">AUTOMATA DATA: </div>
+            <textarea id="atmdata-tbox" class="animate2s"></textarea>
+            <input type="button" id="close-databox-button" value="Close" class="sidebar-button"/>
+        </div>
+
         <div id="sidebar">
 
             <h4>Control Panel</h4>
@@ -19,8 +27,8 @@
                 map you want to load from the "maps" folder.
             </p>
 
-            <input type="button" id="print-data" value="Input Data" class="sidebar-button"/>
-            <input type="button" id="print-data" value="Blur Path" class="sidebar-button"/>
+            <input type="button" id="input-data" value="Input Data" class="sidebar-button"/>
+            <input type="button" id="blur-path" value="Blur Path" class="sidebar-button"/>
 
             <p>Simulation:</p>
             <input type="button" id="sim-start" value="Start" class="sidebar-button"/>
