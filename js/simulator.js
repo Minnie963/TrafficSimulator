@@ -11,6 +11,7 @@ function point(x, y, pointType){
 var path = [];
 
 var mapVisibility = 1;
+var lastParsedPath = "";
 
 var toAnimate = false;
 
@@ -116,11 +117,13 @@ function parseData(){
             appendToConsole("<br /><br />#### Path data provided is NOT a valid JSON data! ####<br/>");
             return;
         }
-
-        //parse path data JSON string
-        path = JSON.parse(pathJSON);
-        //recreate points from path data
-        recreatePath();
+        if(lastParsedPath != pathJSON){
+            lastParsedPath = pathJSON;
+            //parse path data JSON string
+            path = JSON.parse(pathJSON);
+            //recreate points from path data
+            recreatePath();
+        }  
     }
     if(atmJSON == ""){
         appendToConsole("<br />No Automata data provided.");
