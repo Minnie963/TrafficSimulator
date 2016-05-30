@@ -10,9 +10,9 @@ var Car = function(carPath) {
 	this.image.src = "resources/cars/taxi.png";
 
 	dist = initDist();
-	this.angle = initAngle();
 	prevIndex = goToEntry();
 	pathIndex = prevIndex + 1;
+	this.angle = initAngle();
 	this.carCoord['x'] = carPath[prevIndex]['x'];
 	this.carCoord['y'] = carPath[prevIndex]['y'];
 
@@ -22,7 +22,7 @@ var Car = function(carPath) {
 		var entryPoints = [];
 		entryPoints.push(0);
 		for (var i = 0; i < path.length; i++) {
-			if(path[i]['type'] == 1) {
+			if(path[i]['type'] == 1 && i < path.length-1) {
 				entryPoints.push(i+1);
 			}
 			if(path[i]['branch'].length > 0 && i < path.length-1 ) {
@@ -70,6 +70,17 @@ var Car = function(carPath) {
 		if(pathIndex < path.length){
 			var x = Math.round(this.carCoord['x']);
 			var y = Math.round(this.carCoord['y']);
+			//check if car is out of bounds
+			if(x > 1200 || y > 1200 || y < 0 || x < 0) {
+				prevIndex = goToEntry();
+				pathIndex = prevIndex + 1;
+				this.carCoord['x'] = path[prevIndex]['x'];
+				console.log(path[prevIndex]['x']);
+				this.carCoord['y'] = path[prevIndex]['y'];
+				dist = initDist();
+				this.angle = initAngle();
+				return;
+			}
 			if(x == path[pathIndex]['x'] && y == path[pathIndex]['y']){
 				prevIndex = pathIndex;
 				if(path[pathIndex]['branch'].length > 0) {
@@ -108,7 +119,20 @@ var Car = function(carPath) {
 				this.carCoord['y']+=vely;
 		}
 	}
+
+	this.getFrontCoord = function() {
+		var velx = (path[pathIndex]['x'] - path[prevIndex]['x'])/dist;
+		var vely = (path[pathIndex]['y'] - path[prevIndex]['y'])/dist;
+		x = Math.floor(this.carCoord['x']);
+		y = Math.floor(this.carCoord['y']);
+		var front = {};
+		front['x'] = (x + velx+11);
+		front['y'] = (y + vely+11);
+
+		return front;
+	}
 };
+
 
 var CarList = function(carPath) {
 	this.cars = []
@@ -137,7 +161,17 @@ var CarList = function(carPath) {
 
 	this.moveCars = function() {
 		for (var i = 0; i < size; i++) {
-			this.cars[i].move();
+			var toMove = true;
+			var checkPoints = this.cars[i].getFrontCoord();
+			for (var x = 0; x < this.cars.length; x++) {
+				if(checkPoints['x'] > this.cars[x].carCoord['x']-9 && 
+					checkPoints['x'] < this.cars[x].carCoord['x']+9 &&
+					checkPoints['y'] > this.cars[x].carCoord['y']-9 &&
+					checkPoints['y'] < this.cars[x].carCoord['y']+9)
+					toMove = false;
+			}
+			if(toMove)
+				this.cars[i].move();
 		}
 	}
 };
