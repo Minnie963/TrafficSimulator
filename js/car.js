@@ -9,9 +9,9 @@ var Car = function(carPath) {
 	this.image = new Image();
 	this.image.src = "resources/cars/taxi.png";
 
-	dist = initDist();
 	prevIndex = goToEntry();
 	pathIndex = prevIndex + 1;
+	dist = initDist();
 	this.angle = initAngle();
 	this.carCoord['x'] = carPath[prevIndex]['x'];
 	this.carCoord['y'] = carPath[prevIndex]['y'];
@@ -126,16 +126,17 @@ var Car = function(carPath) {
 		x = Math.floor(this.carCoord['x']);
 		y = Math.floor(this.carCoord['y']);
 		var front = {};
-		front['x'] = (x + velx+11);
-		front['y'] = (y + vely+11);
+		front['x'] = (x + velx+12);
+		front['y'] = (y + vely+12);
 
 		return front;
 	}
 };
 
 
-var CarList = function(carPath) {
+var CarList = function(carPath, trafficLight) {
 	this.cars = []
+	var tLights = trafficLight;
 	var size = 0;
 	var path = carPath;
 
@@ -163,12 +164,30 @@ var CarList = function(carPath) {
 		for (var i = 0; i < size; i++) {
 			var toMove = true;
 			var checkPoints = this.cars[i].getFrontCoord();
+			//collision
 			for (var x = 0; x < this.cars.length; x++) {
-				if(checkPoints['x'] > this.cars[x].carCoord['x']-9 && 
-					checkPoints['x'] < this.cars[x].carCoord['x']+9 &&
-					checkPoints['y'] > this.cars[x].carCoord['y']-9 &&
-					checkPoints['y'] < this.cars[x].carCoord['y']+9)
+				if(checkPoints['x'] > this.cars[x].carCoord['x']-10 && 
+					checkPoints['x'] < this.cars[x].carCoord['x']+10 &&
+					checkPoints['y'] > this.cars[x].carCoord['y']-10 &&
+					checkPoints['y'] < this.cars[x].carCoord['y']+10)
 					toMove = false;
+			}
+			//traffic light
+			for (var x = 0; x < tLights.length; x++) {
+				var tLight = tLights[x];
+				for (var y = 0; y < tLight['points'].length; y++) {
+					var pointPair = tLight['points'][y];
+					for (var z = 0; z < pointPair.length; z++) {
+						if(pointPair[z]['x']+9 > this.cars[i].carCoord['x'] &&
+							pointPair[z]['x']-9 < this.cars[i].carCoord['x'] &&
+							pointPair[z]['y']+9 > this.cars[i].carCoord['y'] &&
+							pointPair[z]['y']-9 < this.cars[i].carCoord['y'] &&
+							!pointPair[z]['status']){
+							toMove = false;
+						}
+							
+					}
+				}
 			}
 			if(toMove)
 				this.cars[i].move();

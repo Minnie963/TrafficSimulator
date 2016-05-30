@@ -1,6 +1,7 @@
 var testPoints = [];
 var cars;
-
+var timer = 0;
+var auto = new tAutomata();
 
 function animate(){
 	if(toAnimate){
@@ -10,12 +11,17 @@ function animate(){
 		canvas.save();
 		cars.moveCars();
 	}
+	if(timer == 500){
+		testTLight[0]['points'] = auto.doTraffic(testTLight[0]['points']);
+		timer = 0;
+	}
+	timer++;
 	window.requestAnimationFrame(animate);
 }
 
 function startAnimation(){
 	testPoints = path;
-	cars = new CarList(testPoints);
+	cars = new CarList(testPoints, testTLight);
 	cars.createCars(100);
 	window.requestAnimationFrame(animate);
 }
