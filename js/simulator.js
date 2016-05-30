@@ -43,13 +43,21 @@ $(document).ready(function () {
             mapVisibility = 0;
         }
     });
-    $('#sim-start').click(function(){
+    $('#sim-start').click(function () {
         toAnimate = true;
     });
 
-    $('#sim-stop').click(function(){
+    $('#sim-stop').click(function () {
         toAnimate = false;
-    })
+    });
+
+    $('#input-data').click(function () {
+        DataBox(1);
+    });
+
+    $('#close-databox-button').click(function () {
+        DataBox(0);
+    });
 
 });
 
@@ -74,4 +82,16 @@ function hideMap(){
     $('#map-area').css('background-image', "url('')");
 }
 
+function printToConsole(msg){
+    $('#console').html(msg);
+}
+
+function DataBox(dataBoxStatus){
+    if(dataBoxStatus == 0){
+        $('#get-data-box').attr('class', 'hidden');
+    }
+    else{
+        $('#get-data-box').attr('class', '');
+    }
+}
 /*------------------------------------------------------------------------- */
