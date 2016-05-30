@@ -1,4 +1,5 @@
 //This is the car Class. 
+var finalEntryPoints;
 
 var Car = function(carPath) {
 	var path = carPath;
@@ -16,22 +17,16 @@ var Car = function(carPath) {
 	this.carCoord['x'] = carPath[prevIndex]['x'];
 	this.carCoord['y'] = carPath[prevIndex]['y'];
 
+
+	
 	//Functions
 
+	
+
 	function goToEntry() {
-		var entryPoints = [];
-		entryPoints.push(0);
-		for (var i = 0; i < path.length; i++) {
-			if(path[i]['type'] == 1 && i < path.length-1) {
-				entryPoints.push(i+1);
-			}
-			if(path[i]['branch'].length > 0 && i < path.length-1 ) {
-				entryPoints.push(i+1);
-			}
-		}
-		
-		var entry = Math.floor((Math.random() * 10)) % entryPoints.length;
-		return entryPoints[entry];
+
+		var entry = Math.floor((Math.random() * 10)) % finalEntryPoints.length;
+		return finalEntryPoints[entry];
 	}
 
 	function initDist() {
@@ -75,7 +70,7 @@ var Car = function(carPath) {
 				prevIndex = goToEntry();
 				pathIndex = prevIndex + 1;
 				this.carCoord['x'] = path[prevIndex]['x'];
-				console.log(path[prevIndex]['x']);
+				// console.log(path[prevIndex]['x']); ------------------------------------
 				this.carCoord['y'] = path[prevIndex]['y'];
 				dist = initDist();
 				this.angle = initAngle();
@@ -96,7 +91,7 @@ var Car = function(carPath) {
 					prevIndex = goToEntry();
 					pathIndex = prevIndex + 1;
 					this.carCoord['x'] = path[prevIndex]['x'];
-					console.log(path[prevIndex]['x']);
+					// console.log(path[prevIndex]['x']); ----------------------------------
 					this.carCoord['y'] = path[prevIndex]['y'];
 					dist = initDist();
 					this.angle = initAngle();
@@ -134,11 +129,11 @@ var Car = function(carPath) {
 };
 
 
-var CarList = function(carPath) {
+var CarList = function(carPath, carEntry) {
 	this.cars = []
 	var size = 0;
 	var path = carPath;
-
+   finalEntryPoints =carEntry;
 	this.drawCars = function(canvas) {
 		for (var i = 0; i < size; i++) {
 			var image = this.cars[i].image;
