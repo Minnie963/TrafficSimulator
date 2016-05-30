@@ -63,14 +63,12 @@ $(document).ready(function () {
 
 /*------------------------------------------------------------------------- */
 
-
-
-
 /*------------------- METHODS/FUNCTIONS  --------------------------------------*/
 
 function loadMap(filename){
     currentMapImage = 'resources/maps/' + filename;
     $('#map-area').css('background-image', 'url(' + currentMapImage + ')');
+    printToConsole('<br /> You loaded "' + filename + '" as your map.');
     mapVisibility = 1;
 }
 
@@ -92,6 +90,7 @@ function DataBox(dataBoxStatus){
     }
     else{
         $('#get-data-box').attr('class', '');
+        printToConsole('<br />### Input Path and Automata Data ###. <br /><br /> Copy and Paste data to the textboxes provided.')
     }
 }
 /*------------------------------------------------------------------------- */

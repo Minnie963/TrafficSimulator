@@ -66,8 +66,8 @@ textarea{
     width: 95%;
     margin: auto;
     margin-top: 20px;
-    margin-bottom: 20px;
-    height: 200px;
+    margin-bottom: 15px;
+    height: 180px;
     overflow: auto;
     font-size: 13px;
     background-color: rgb(240, 240, 240);
@@ -199,4 +199,7 @@ textarea{
     border: 0px;
     background-color: rgb(220, 220, 220);
     overflow: auto;
+}
+p{
+    font-size: 14px;
 }

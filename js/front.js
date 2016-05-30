@@ -16,6 +16,7 @@ var branchPoints = [];
 var pointType = 0;
 var currentMapImage = '';
 var mapVisibility = 1;
+var linkHistory = [];
 
 var systemMode = 0; // 0 - Make Path, 1 - Link Mode
 
@@ -37,7 +38,7 @@ $(document).ready(function () {
     });
 
     $('#undo').click(function () {
-        undoAddPoint();
+         undoAddPoint();
     });
 
     $('#link-mode').click(function () {
@@ -108,6 +109,10 @@ $(document).ready(function () {
     $('#close-databox-button').click(function () {
         hideDataBox();
     });
+
+    $('#undo-link').click(function () {
+        undoLink();
+    });
 });
 
 /*--------------------------------------------------------------------- */
@@ -160,6 +165,7 @@ function linkMode(){
     //disable all other function buttons
     $('#undo').attr('disabled', '');
     $('#trace-path').attr('disabled', '');
+    $('#undo-link').removeAttr('disabled');
     blurAllPoints();
     printToConsole('### Link Mode On ### <br/><br/> Select a point as root then select point/points where it can branch.');
 }
@@ -167,6 +173,7 @@ function linkMode(){
 function exitLinkMode(){
     $('#undo').removeAttr('disabled');
     $('#trace-path').removeAttr('disabled');
+    $('#undo-link').attr('disabled', '');
     unblurAllPoints();
     printToConsole('### Link Mode Off ###');
 }
@@ -219,7 +226,12 @@ function addBranchPoint(pointID){
 }
 
 function saveBranchPoints(){
+
     path[rootPointIndex].branch = branchPoints;
+
+    //saves the root point where last linking was specified for undo purposes
+    linkHistory.push(rootPointIndex);
+
     printToConsole('### Branch Points Added to point_' + path[rootPointIndex].x + '_' + path[rootPointIndex].y);
     branchPoints = [];
     clearRootPointIndex();
@@ -258,5 +270,25 @@ function openDataBox(){
 
 function hideDataBox(){
     $('#get-data-box').attr('class', 'hidden');
+}
+
+function undoLink(){
+    if(linkHistory.length > 0){
+        var undoRoot = linkHistory[linkHistory.length - 1];
+        linkHistory.splice(linkHistory.length - 1, 1);
+        var undoBranch = path[undoRoot].branch;
+        for(var i = 0; i < undoBranch.length; i++){
+            var branchIndex = undoBranch[i];
+            var pointID = 'point_' + path[branchIndex].x + '_' + path[branchIndex].y;
+            $('#' + pointID).attr('class', 'pin-pointer go-pt');
+        }
+        path[undoRoot].branch = [];
+        var rootPointID = 'point_' + path[undoRoot].x + '_' + path[undoRoot].y;
+        $('#' + rootPointID).attr('class', 'pin-pointer go-pt');
+        printToConsole('<br />Deleted all links from root point : <br/><br/>' + rootPointID);
+    }
+    else{
+        printToConsole('<br />Cannot undo. You have not made any links bruh!');
+    }
 }
 /*---------------------------------------------------------------------*/
