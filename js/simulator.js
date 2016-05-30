@@ -49,7 +49,7 @@ $(document).ready(function () {
     });
     $('#sim-start').click(function () {
         toAnimate = true;
-        startAnimation();
+        generateEntryPoint();
     });
 
     $('#sim-stop').click(function () {
