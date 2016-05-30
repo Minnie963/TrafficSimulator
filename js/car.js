@@ -123,7 +123,7 @@ var CarList = function(carPath) {
 			canvas.save();
 			canvas.translate(x,y);
 			canvas.rotate(this.cars[i].angle*(Math.PI / 180));
-			canvas.drawImage(image,0,0,image.width,image.height,-25,-25,50,50);
+			canvas.drawImage(image,0,0,image.width,image.height,-10,-10,20,20);
 			canvas.restore();
 		}
 	}
