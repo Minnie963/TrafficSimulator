@@ -1,131 +1,133 @@
 //This is the car Class. 
 var finalEntryPoints;
 
-var Car = function(carPath) {
-	var path = carPath;
-	var pathIndex = 1;
-	var prevIndex = pathIndex - 1;
-	var dist = 0;
-	this.carCoord = {};
-	this.image = new Image();
-	this.image.src = "resources/cars/taxi.png";
+var Car = function (carPath) {
+    var path = carPath;
+    var pathIndex = 1;
+    var prevIndex = pathIndex - 1;
+    var dist = 0;
+    this.carCoord = {};
+    this.image = new Image();
+    this.image.src = "resources/cars/taxi.png";
 
-	prevIndex = goToEntry();
-	pathIndex = prevIndex + 1;
-	dist = initDist();
-	this.angle = initAngle();
-	this.carCoord['x'] = carPath[prevIndex]['x'];
-	this.carCoord['y'] = carPath[prevIndex]['y'];
+    prevIndex = goToEntry();
+    pathIndex = prevIndex + 1;
+    dist = initDist();
+    this.angle = initAngle();
+    this.carCoord['x'] = carPath[prevIndex]['x'];
+    this.carCoord['y'] = carPath[prevIndex]['y'];
 
 
-	
-	//Functions
 
-	
+    //Functions
 
-	function goToEntry() {
 
-		var entry = Math.floor((Math.random() * 10)) % finalEntryPoints.length;
-		return finalEntryPoints[entry];
-	}
 
-	function initDist() {
-		//change dist
-		dist = Math.sqrt((path[pathIndex]['x']-path[prevIndex]['x'])*(path[pathIndex]['x']-path[prevIndex]['x'])+
-			(path[pathIndex]['y']-path[prevIndex]['y'])*(path[pathIndex]['y']-path[prevIndex]['y']));
-		return dist;
-	};
+    function goToEntry() {
 
-	function initAngle(){
-		//change angle
-		var angleY = path[pathIndex]['y'] - path[prevIndex]['y'];
-		var angleX = path[pathIndex]['x'] - path[prevIndex]['x'];
+        var entry = Math.floor((Math.random() * 10)) % finalEntryPoints.length;
+        return finalEntryPoints[entry];
+    }
 
-		this.angle = Math.atan2(angleY, angleX) * (180 / Math.PI);
+    function initDist() {
+        //change dist
+        dist = Math.sqrt((path[pathIndex]['x'] - path[prevIndex]['x']) * (path[pathIndex]['x'] - path[prevIndex]['x']) +
+			(path[pathIndex]['y'] - path[prevIndex]['y']) * (path[pathIndex]['y'] - path[prevIndex]['y']));
+        return dist;
+    };
 
-		if (this.angle < 0)
-			this.angle = Math.abs(this.angle);
-		else 
-			this.angle = 360 - this.angle;
+    function initAngle() {
+        //change angle
+        var angleY = path[pathIndex]['y'] - path[prevIndex]['y'];
+        var angleX = path[pathIndex]['x'] - path[prevIndex]['x'];
 
-		if(angleX > 0) {
-			//if going to the right
-			this.angle = 90 - this.angle;
-		}
-		else {
-			this.angle = 360 + 90 - this.angle;
-		}
+        this.angle = Math.atan2(angleY, angleX) * (180 / Math.PI);
 
-		return this.angle;
-	}
+        if (this.angle < 0)
+            this.angle = Math.abs(this.angle);
+        else
+            this.angle = 360 - this.angle;
 
-	this.move = function() {
+        if (angleX > 0) {
+            //if going to the right
+            this.angle = 90 - this.angle;
+        }
+        else {
+            this.angle = 360 + 90 - this.angle;
+        }
 
-		//change next Destination if car has arrived
-		if(pathIndex < path.length){
-			var x = Math.round(this.carCoord['x']);
-			var y = Math.round(this.carCoord['y']);
-			//check if car is out of bounds
-			if(x > 1200 || y > 1200 || y < 0 || x < 0) {
-				prevIndex = goToEntry();
-				pathIndex = prevIndex + 1;
-				this.carCoord['x'] = path[prevIndex]['x'];
-				// console.log(path[prevIndex]['x']); ------------------------------------
-				this.carCoord['y'] = path[prevIndex]['y'];
-				dist = initDist();
-				this.angle = initAngle();
-				return;
-			}
-			if(x == path[pathIndex]['x'] && y == path[pathIndex]['y']){
-				prevIndex = pathIndex;
-				if(path[pathIndex]['branch'].length > 0) {
-					var pathJump = path[pathIndex]['branch'].length;
-					var randomPath = Math.floor((Math.random() * 10) % pathJump);
-					pathIndex = path[pathIndex]['branch'][randomPath];
-				}
-				else
-					pathIndex++;
+        return this.angle;
+    }
 
-				//if type is dead point, go to another point
-				if(path[prevIndex]['type'] == 1 || pathIndex >= path.length){
-					prevIndex = goToEntry();
-					pathIndex = prevIndex + 1;
-					this.carCoord['x'] = path[prevIndex]['x'];
-					// console.log(path[prevIndex]['x']); ----------------------------------
-					this.carCoord['y'] = path[prevIndex]['y'];
-					dist = initDist();
-					this.angle = initAngle();
-					return;
-				}
+    this.move = function () {
 
-				//change angle
-				this.angle = initAngle();
+        //change next Destination if car has arrived
+        if (pathIndex < path.length) {
+            var x = Math.round(this.carCoord['x']);
+            var y = Math.round(this.carCoord['y']);
+            //check if car is out of bounds
+            if (x > 1200 || y > 1200 || y < 0 || x < 0) {
+                prevIndex = goToEntry();
+                pathIndex = prevIndex + 1;
+                this.carCoord['x'] = path[prevIndex]['x'];
+                // console.log(path[prevIndex]['x']); ------------------------------------
+                this.carCoord['y'] = path[prevIndex]['y'];
+                dist = initDist();
+                this.angle = initAngle();
+                return;
+            }
 
-				//change dist
-				this.dist = initDist();
-			}
+            if (Math.abs(path[pathIndex]['x'] - x) <= 3 && Math.abs(path[pathIndex]['y'] - y) <= 3) {
+                printToConsole('<br/ >Destination changed! ' + x + '_' + y);
+                prevIndex = pathIndex;
+                if (path[pathIndex]['branch'].length > 0) {
+                    var pathJump = path[pathIndex]['branch'].length;
+                    var randomPath = Math.floor((Math.random() * 10) % pathJump);
+                    pathIndex = path[pathIndex]['branch'][randomPath];
+                }
+                else
+                    pathIndex++;
 
-			//move Car
-			var velx = (path[pathIndex]['x'] - path[prevIndex]['x'])/dist;
-			var vely = (path[pathIndex]['y'] - path[prevIndex]['y'])/dist;
-			x = Math.floor(this.carCoord['x']);
-			y = Math.floor(this.carCoord['y']);
-				this.carCoord['x']+=velx;
-				this.carCoord['y']+=vely;
-		}
-	}
+                //if type is dead point, go to another point
+                if (path[prevIndex]['type'] == 1 || pathIndex >= path.length) {
+                    prevIndex = goToEntry();
+                    pathIndex = prevIndex + 1;
+                    this.carCoord['x'] = path[prevIndex]['x'];
+                    // console.log(path[prevIndex]['x']); ----------------------------------
+                    this.carCoord['y'] = path[prevIndex]['y'];
+                    dist = initDist();
+                    this.angle = initAngle();
+                    return;
+                }
 
-	this.getFrontCoord = function() {
-		var velx = (path[pathIndex]['x'] - path[prevIndex]['x'])/dist;
-		var vely = (path[pathIndex]['y'] - path[prevIndex]['y'])/dist;
-		x = Math.floor(this.carCoord['x']);
-		y = Math.floor(this.carCoord['y']);
-		var front = {};
-		front['x'] = (x + (velx*17));
-		front['y'] = (y + (vely*17));
+                //change angle
+                this.angle = initAngle();
 
-		return front;
-	}
+                //change dist
+                this.dist = initDist();
+            }
+
+            //move Car
+            var velx = (path[pathIndex]['x'] - path[prevIndex]['x']) / dist;
+            var vely = (path[pathIndex]['y'] - path[prevIndex]['y']) / dist;
+            x = Math.floor(this.carCoord['x']);
+            y = Math.floor(this.carCoord['y']);
+            this.carCoord['x'] += velx;
+            this.carCoord['y'] += vely;
+        }
+    }
+
+    this.getFrontCoord = function () {
+        var velx = (path[pathIndex]['x'] - path[prevIndex]['x']) / dist;
+        var vely = (path[pathIndex]['y'] - path[prevIndex]['y']) / dist;
+        x = Math.floor(this.carCoord['x']);
+        y = Math.floor(this.carCoord['y']);
+        var front = {};
+        front['x'] = (x + (velx * 17));
+        front['y'] = (y + (vely * 17));
+
+        return front;
+    }
 };
 
 

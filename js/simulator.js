@@ -47,6 +47,7 @@ $(document).ready(function () {
     $('#sim-start').click(function () {
         toAnimate = true;
         generateEntryPoint();
+        
     });
 
     $('#sim-stop').click(function () {
