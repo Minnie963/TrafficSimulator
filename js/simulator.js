@@ -11,6 +11,7 @@ function point(x, y, pointType){
 var path = [];
 
 var mapVisibility = 1;
+var lastParsedPath = "";
 
 var toAnimate = false;
 
@@ -31,10 +32,6 @@ $(document).ready(function () {
 
     $('#load-map').click(function () {
         loadMap($('#map-filename-input').val());
-    });
-
-    $('#parse-data').click(function () {
-        loadData($('#pathdata-tbox').val());
     });
 
     $('#show-hide-map').click(function () {
@@ -64,6 +61,10 @@ $(document).ready(function () {
         DataBox(0);
     });
 
+    $('#parse-data').click(function () {
+        parseData();
+    });
+
 });
 
 /*------------------------------------------------------------------------- */
@@ -89,18 +90,79 @@ function printToConsole(msg){
     $('#console').html(msg);
 }
 
+function appendToConsole(msg){
+    $('#console').html($('#console').html() + msg);
+}
+
 function DataBox(dataBoxStatus){
     if(dataBoxStatus == 0){
         $('#get-data-box').attr('class', 'hidden');
+        printToConsole('<br/>Data box closed.')
     }
     else{
         $('#get-data-box').attr('class', '');
-        printToConsole('<br />### Input Path and Automata Data ###. <br /><br /> Copy and Paste data to the textboxes provided.')
+        printToConsole('<br />### Input Path and Automata Data ###. <br /><br /> Copy and Paste data to the textboxes provided.');
     }
 }
 
+function parseData(){
+    var pathJSON = $('#pathdata-tbox').val();
+    var atmJSON = $('#atmdata-tbox').val();
+    printToConsole('');
+    if(pathJSON == ""){
+        appendToConsole("<br />No path data provided.");
+    }
+    else{
+        appendToConsole("<br />Path data provided.");
+        if(!isvalidJSON(pathJSON)){
+            appendToConsole("<br /><br />#### Path data provided is NOT a valid JSON data! ####<br/>");
+            return;
+        }
+        if(lastParsedPath != pathJSON){
+            lastParsedPath = pathJSON;
+            //parse path data JSON string
+            path = JSON.parse(pathJSON);
+            //recreate points from path data
+            recreatePath();
+        }  
+    }
+    if(atmJSON == ""){
+        appendToConsole("<br />No Automata data provided.");
+    }
+    else{
+        appendToConsole("<br />Automata data provided.");
+        if(!isvalidJSON(atmJSON)){
+            appendToConsole("<br /><br />#### Automata data provided is NOT a valid JSON data! ####<br/>");
+            return;
+        }
 
-function loadData(datafile){
-    path = JSON.parse(datafile);
+        //will add here parser for automata data as soon as data structure is made
+    }
+    $('#get-data-box').attr('class', 'hidden');
+}
+
+function recreatePath(){
+    for(var i = 0; i < path.length; i++){
+        putMarker(path[i].x, path[i].y, path[i].type);
+    }
+}
+
+function putMarker(x, y, pointType){
+    if(pointType == 0){
+        $('#map-area').append('<div class="pin-pointer go-pt" id="point_' + x + '_' + y + '"></div>');
+    }
+    else{
+        $('#map-area').append('<div class="pin-pointer dead-pt" id="point_' + x + '_' + y + '"></div>');
+    } 
+    $('#point_' + x + '_' + y).css({top: y - 6, left: x - 6});
+}
+
+function isvalidJSON(string) {
+    try {
+        JSON.parse(string);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 /*------------------------------------------------------------------------- */
