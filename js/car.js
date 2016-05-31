@@ -121,8 +121,8 @@ var Car = function(carPath) {
 		x = Math.floor(this.carCoord['x']);
 		y = Math.floor(this.carCoord['y']);
 		var front = {};
-		front['x'] = (x + velx+12);
-		front['y'] = (y + vely+12);
+		front['x'] = (x + (velx*17));
+		front['y'] = (y + (vely*17));
 
 		return front;
 	}
@@ -160,11 +160,11 @@ var CarList = function(carPath, carEntry, trafficLight) {
 			var toMove = true;
 			var checkPoints = this.cars[i].getFrontCoord();
 			//collision
-			for (var x = 0; x < this.cars.length; x++) {
-				if(checkPoints['x'] > this.cars[x].carCoord['x']-10 && 
-					checkPoints['x'] < this.cars[x].carCoord['x']+10 &&
-					checkPoints['y'] > this.cars[x].carCoord['y']-10 &&
-					checkPoints['y'] < this.cars[x].carCoord['y']+10)
+			for (var x = 0; x < size; x++) {
+				if(checkPoints['x'] > this.cars[x].carCoord['x']-8 && 
+					checkPoints['x'] < this.cars[x].carCoord['x']+8 &&
+					checkPoints['y'] > this.cars[x].carCoord['y']-8 &&
+					checkPoints['y'] < this.cars[x].carCoord['y']+8)
 					toMove = false;
 			}
 			//traffic light

@@ -14,8 +14,17 @@ var tLight = function(x, y){
 };
 
 //JSON = "[{"points":[[{"x":10,"y":10}],[{"x":10,"y":10}],[{"x":10,"y":10}]], "type":0]},]"
-var testTLight = [{"points":[[{"x":446, "y":218, "status":true},],[{"x":420, "y":242, "status":false},],[{"x":483, "y":250, "status":true},]], "type":0},];
-
+// var testTLight = [{"points":[[{"x":446, "y":218, "status":true},],[{"x":420, "y":242, "status":false},],[{"x":483, "y":250, "status":true},]], "type":0},];
+var testTLight = [{"points":[
+[{"x":74,"y":34,"status":true},{"x":88,"y":48,"status":true}],
+[{"x":90,"y":114,"status":false},{"x":78,"y":126,"status":false}],
+[{"x":28,"y":142,"status":false},{"x":18,"y":130,"status":false}]], "type":0},];
+// [{"x":62,"y":50,"status":true},{"x":68,"y":60,"status":true}],
+// [{"x":88,"y":108,"status":false},{"x":78,"y":120,"status":false}],
+// [{"x":36,"y":138,"status":false},{"x":28,"y":122,"status":false}]
+// [{"x":74,"y":34,"branch":[],"type":0},{"x":88,"y":48,"branch":[],"type":0}
+// {"x":90,"y":114,"branch":[],"type":0},{"x":78,"y":126,"branch":[],"type":0}
+// {"x":28,"y":142,"branch":[],"type":0},{"x":18,"y":130,"branch":[],"type":0}]
 
 //Three-way Automata
 var tAutomata = function() {
@@ -88,7 +97,7 @@ var tAutomata = function() {
 };
 
 var fAutomata = function() {
-	this.doTraffic() = function() {
+	this.doTraffic = function() {
 		if(points[0][0]['status'] && !points[1][0]['status'] && !points[2][0]['status'] && !points[3][0]['status']){
 			//horizontal
 			for (var i = 0; i < points[0].length; i++) {
