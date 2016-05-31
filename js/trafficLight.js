@@ -88,7 +88,7 @@ var tAutomata = function() {
 };
 
 var fAutomata = function() {
-	this.doTraffic() = function() {
+	this.doTraffic = function() {
 		if(points[0][0]['status'] && !points[1][0]['status'] && !points[2][0]['status'] && !points[3][0]['status']){
 			//horizontal
 			for (var i = 0; i < points[0].length; i++) {
