@@ -1,5 +1,5 @@
 # TrafficSimulator
-CMSC178 FinalRequirement
+## CMSC178 FinalRequirement
 
 
 A traffic simulator for Cebu and Mandaue City. 
@@ -7,7 +7,7 @@ This WebApp has a sample data and map integrated to it.
 To load the map just input "144.png" in the file to be loaded input box and click load.
 You can copy and paste the data inside the 144.txt file for a pre-defined path of the map or you can just create a new path.
 
-Instructions to Create Path
+### Instructions to Create Path
   1. Open the Path Maker (index.html)
   2. Input the file name of the map and click "Load Map" Button (note: maps should be placed inside the app's maps folder which is located in /resources/maps)
   3. Add points using "Move Point" Button 
@@ -20,13 +20,13 @@ Instructions to Create Path
     (c) Point that is created after a dead point will also be considered as an entry point, 
     (d) Entry points will be nullified when it becomes a branch point)
 
-Instructions to Simulate Traffic:
+### Instructions to Simulate Traffic:
   1. Open Simulator (simulator.html)
   2. Input the file name of the map and load it
   3. To place the path data, user must click the "input data" button and paste the data that you've just copied from the Path maker into the Path Data Box and click Parse Data.
   4. Start the simulation by clicking the "Start" Button
 
-Instructions to Create Traffic Lights (current implementation requires difficult traffic light creation, this issue will be solve in the next iteration of the WebApp)
+### Instructions to Create Traffic Lights (current implementation requires difficult traffic light creation, this issue will be solve in the next iteration of the WebApp)
   1. Open Path maker and load a map
   2. Click a lane/s which you want your traffic light to control
   3. Click show data and copy the x and y position; the line looks like this --- "x":123,"y":184 ---- this is the point where your traffic light will be located
