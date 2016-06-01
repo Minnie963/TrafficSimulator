@@ -16,9 +16,10 @@ var tLight = function(x, y){
 //JSON = "[{"points":[[{"x":10,"y":10}],[{"x":10,"y":10}],[{"x":10,"y":10}]], "type":0]},]"
 // var testTLight = [{"points":[[{"x":446, "y":218, "status":true},],[{"x":420, "y":242, "status":false},],[{"x":483, "y":250, "status":true},]], "type":0},];
 var testTLight = [{"points":[
-[{"x":74,"y":34,"status":true},{"x":88,"y":48,"status":true}],
-[{"x":90,"y":114,"status":false},{"x":78,"y":126,"status":false}],
-[{"x":28,"y":142,"status":false},{"x":18,"y":130,"status":false}]], "type":0},];
+[{"x":517,"y":343,"status":true},{"x":526,"y":353,"status":true},{"x":534,"y":362,"status":true},{"x":544,"y":374,"status":true}],
+[{"x":445,"y":477,"status":false},{"x":451,"y":487,"status":false},{"x":461,"y":495,"status":false},{"x":468,"y":508,"status":false}],
+[{"x":572,"y":462,"status":false},{"x":562,"y":473,"status":false},{"x":551,"y":482,"status":false}]
+], "type":0},];
 // [{"x":62,"y":50,"status":true},{"x":68,"y":60,"status":true}],
 // [{"x":88,"y":108,"status":false},{"x":78,"y":120,"status":false}],
 // [{"x":36,"y":138,"status":false},{"x":28,"y":122,"status":false}]
