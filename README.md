@@ -41,6 +41,7 @@ You can copy and paste the data inside the 144.txt file for a pre-defined path o
   4. Open trafficlight.js file in a text editor
   5. Replace the x and y position 
   6. The syntax for the traffic light is ---
+
           [{"points":[
 
             [{"x":__,"y":__,"status":__},{"x":__,"y":__,"status":__}], // this points are contolled by traffic light A, and this controls 2 lanes, to add more lanes just copy the syntax of the lane and comma separate it
