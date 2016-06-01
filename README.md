@@ -10,6 +10,8 @@ To load the map just input "144.png" in the file to be loaded input box and clic
 
 You can copy and paste the data inside the 144.txt file for a pre-defined path of the map or you can just create a new path.
 
+You can download the sample data and the Cebu and Manduae City maps [here](https://www.google.com)
+
 ### Instructions to Create Path
   1. Open the Path Maker (index.html)
   2. Input the file name of the map and click "Load Map" Button (note: maps should be placed inside the app's maps folder which is located in /resources/maps)
