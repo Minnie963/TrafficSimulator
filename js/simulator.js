@@ -149,13 +149,13 @@ function recreatePath(){
 }
 
 function putMarker(x, y, pointType){
-    if(pointType == 0){
-        $('#map-area').append('<div class="pin-pointer go-pt" id="point_' + x + '_' + y + '"></div>');
-    }
-    else{
-        $('#map-area').append('<div class="pin-pointer dead-pt" id="point_' + x + '_' + y + '"></div>');
-    } 
-    $('#point_' + x + '_' + y).css({top: y - 6, left: x - 6});
+    // if(pointType == 0){
+    //     $('#map-area').append('<div class="pin-pointer go-pt" id="point_' + x + '_' + y + '"></div>');
+    // }
+    // else{
+    //     $('#map-area').append('<div class="pin-pointer dead-pt" id="point_' + x + '_' + y + '"></div>');
+    // } 
+    // $('#point_' + x + '_' + y).css({top: y - 6, left: x - 6});
 }
 
 function isvalidJSON(string) {

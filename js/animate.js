@@ -9,6 +9,13 @@ function animate(){
 	if(toAnimate){
 		var canvas = document.getElementById('canvas').getContext('2d');
 		canvas.clearRect(0,0,1200,1200);
+		if(testTLight[0]["type"] == 0){
+			
+				auto3.drawTLight(canvas, testTLight[0]['points']);
+		}
+		else{
+				auto4.drawTLight(canvas, testTLight[0]['points']);
+		}
 		cars.drawCars(canvas);
 		canvas.save();
 		cars.moveCars();
@@ -31,7 +38,7 @@ function startAnimation(){
 	window.requestAnimationFrame(animate);
 }
 
-function generateEntryPoint(){
+function generateEntryPoint(){	
 		var entryPoints = [];
 		entryPoints.push(0);
 		for (var i = 0; i < path.length; i++) {
