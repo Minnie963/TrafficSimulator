@@ -12,9 +12,9 @@
 
 ***
 
-#####If the above data file link did not work, try our mirrors: [Data File 1 ](http://pastebin.com/4uXK4wwK) [Data File 2](https://jpst.it/J53K)<br>For problems or unexpected behavior please do check the [documentation](https://goo.gl/LTX0eH) . <br> For concerns please contact any CMSC 178 students
+#####If the above data file link did not work, try our mirrors: [Data File 1 ](http://pastebin.com/4uXK4wwK) [Data File 2](https://jpst.it/J53K)<br>For problems or unexpected behavior please do check the [documentation.](https://goo.gl/LTX0eH) <br> For concerns please contact the developers
 ***
-#####You can download the sample data and the Cebu and Manduae City maps [here](https://drive.google.com/folderview?id=0B61z34f6mUzrSTZjNmlKcW1XVFU&usp=sharing)
+#####You can download additional data and the Cebu and Manduae City maps [here](https://drive.google.com/folderview?id=0B61z34f6mUzrSTZjNmlKcW1XVFU&usp=sharing)
 
 ---
 ##Basic Usage
